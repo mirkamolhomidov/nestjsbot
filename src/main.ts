@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
-  await app.listen(3000);
+  await app.listen(4000);
 
   console.log('🤖 Telegram bot ishga tushdi...');
 }

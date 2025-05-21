@@ -1,40 +1,45 @@
-import { Injectable } from '@nestjs/common';
-import * as fs from 'fs/promises';
-import * as path from 'path';
-import * as youtubedl from 'youtube-dl-exec';
-import * as ytSearch from 'yt-search';
+import { Injectable } from '@nestjs/common'
+import * as fs from 'fs/promises'
+import * as os from 'os'
+import * as path from 'path'
+import * as youtubedl from 'youtube-dl-exec'
+import * as ytSearch from 'yt-search'
 
 @Injectable()
 export class YoutubeService {
   async search(query: string) {
-    const result = await ytSearch(query);
-    return result.videos;
+    const result = await ytSearch(query)
+    return result.videos
   }
 
   async downloadMP3(
     videoId: string,
   ): Promise<{ buffer: Buffer; title: string } | null> {
-    const filePath = path.join('/tmp', `${videoId}.mp3`);
-    const url = `https://www.youtube.com/watch?v=${videoId}`;
-    const info = (await youtubedl.youtubeDl(url, {
+    const tmpDir = os.tmpdir()
+    const filePath = path.join(tmpDir, `${videoId}.mp3`)
+    const url = `https://www.youtube.com/watch?v=${videoId}`
+    const ytdlOptions = {
       dumpSingleJson: true,
       noWarnings: true,
-    })) as any;
+      cookies: '/root/nestjsbot/cookies.txt',
+    } as any
+    const info = await youtubedl.youtubeDl(url, ytdlOptions) as any
     const ffmpegPath =
-      'C:\\Program Files\\ffmpeg-7.1.1-full_build\\bin\\ffmpeg.exe';
+      '/usr/bin/ffmpeg'
 
     await youtubedl.youtubeDl(url, {
       ffmpegLocation: ffmpegPath,
       extractAudio: true,
       audioFormat: 'mp3',
-      output: '\\tmp\\%(id)s.%(ext)s',
-    });
+      output: path.join(tmpDir, '%(id)s.%(ext)s'),
+      cookies: '/root/nestjsbot/cookies.txt',
+    })
 
     try {
-      const buffer = await fs.readFile(filePath);
-      return { buffer, title: info.title };
+      const buffer = await fs.readFile(filePath)
+      return { buffer, title: info.title }
     } catch (err) {
-      return null;
+      return null
     }
   }
 }
