@@ -17,6 +17,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "typeRoots": ["./node_modules/@types", "./src/types/yt-search.d.ts"]
+    // "typeRoots": ["./node_modules/@types", "./src/types/yt-search.d.ts"]
   }
 }
