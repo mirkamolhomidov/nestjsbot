@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TelegrafModule } from 'nestjs-telegraf';
-import { BotModule } from './bot/bot.module';
-import { YoutubeModule } from './youtube/youtube.module';
+import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { TelegrafModule } from 'nestjs-telegraf'
+import { BotModule } from './bot/bot.module'
+import { UpdateCookiesService } from './utils/updatecookies'
+import { YoutubeModule } from './youtube/youtube.module'
 
 @Module({
   imports: [
@@ -17,5 +18,6 @@ import { YoutubeModule } from './youtube/youtube.module';
     BotModule,
     YoutubeModule,
   ],
+  providers: [UpdateCookiesService]
 })
-export class AppModule {}
+export class AppModule { }
