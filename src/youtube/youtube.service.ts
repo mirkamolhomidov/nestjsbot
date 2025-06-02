@@ -16,12 +16,13 @@ export class YoutubeService {
     videoId: string,
   ): Promise<{ buffer: Buffer; title: string } | null> {
     const tmpDir = os.tmpdir()
+    const cookiesFilePath = path.join(process.cwd(), 'cookies.txt')
     const filePath = path.join(tmpDir, `${videoId}.mp3`)
     const url = `https://www.youtube.com/watch?v=${videoId}`
     const ytdlOptions = {
       dumpSingleJson: true,
       noWarnings: true,
-      cookies: '/root/nestjsbot/cookies.txt',
+      cookies: cookiesFilePath,
     } as any
     const info = await youtubedl.youtubeDl(url, ytdlOptions) as any
     const ffmpegPath =
@@ -32,7 +33,7 @@ export class YoutubeService {
       extractAudio: true,
       audioFormat: 'mp3',
       output: path.join(tmpDir, '%(id)s.%(ext)s'),
-      cookies: '/root/nestjsbot/cookies.txt',
+      cookies: cookiesFilePath,
     })
 
     try {
