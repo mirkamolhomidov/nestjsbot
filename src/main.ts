@@ -7,6 +7,6 @@ async function bootstrap() {
   const config = app.get(ConfigService);
   await app.listen(4000);
 
-  console.log('🤖 Telegram bot ishga tushdi...');
+  console.log('Telegram bot ishga tushdi...');
 }
 bootstrap();
